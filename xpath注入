@@ -1,0 +1,17 @@
+function readItemPrice() {
+	var req = new XMLHttpRequest();
+	req.open("GET", PRICELIST_XML_URL, false);
+	req.send(null);
+
+	var xmlPriceListDoc = req.responseXML;
+	var nsResolver = xmlPriceListDoc.createNSResolver(xmlPriceListDoc.documentElement);
+
+	var params = new URLSearchParams(document.location.search);
+	var itemId = params.get("ItemID");
+
+	var expr = "//priceList/item[itemID='" + itemId + "']/price/text()";
+
+	var price = xmlPriceListDoc.evaluate(expr, xmlPriceListDoc, nsResolver, XPathResult.ANY_TYPE, null);
+
+	return price;
+}
